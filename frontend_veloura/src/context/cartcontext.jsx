@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get("http://localhost:3001/cart/get", {
+      const res = await axios.get("https://localhost:3001/cart/get", {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       setCart(res.data?.items || []);
@@ -35,7 +35,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (jewelryId, quantity = 1) => {
     try {
       const res = await axios.post(
-        "http://localhost:3001/cart/add",
+        "https://localhost:3001/cart/add",
         { jewelryId, quantity },
         {
           headers: { Authorization: `Bearer ${authToken}` },
@@ -51,7 +51,7 @@ export const CartProvider = ({ children }) => {
   // Remove from cart
   const removeFromCart = async (jewelryId) => {
     try {
-      const res = await axios.delete("http://localhost:3001/cart/remove", {
+      const res = await axios.delete("https://localhost:3001/cart/remove", {
         headers: { Authorization: `Bearer ${authToken}` },
         data: { jewelryId },
       });

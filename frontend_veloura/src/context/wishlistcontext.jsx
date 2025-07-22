@@ -19,7 +19,7 @@ export const WishlistProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get("http://localhost:3001/wishlist/get", {
+      const res = await axios.get("https://localhost:3001/wishlist/get", {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       setWishlist(res.data?.items || []);
@@ -34,7 +34,7 @@ export const WishlistProvider = ({ children }) => {
   const addToWishlist = async (jewelryId) => {
     try {
       const res = await axios.post(
-        "http://localhost:3001/wishlist/add",
+        "https://localhost:3001/wishlist/add",
         { jewelryId },
         {
           headers: { Authorization: `Bearer ${authToken}` },
@@ -50,7 +50,7 @@ export const WishlistProvider = ({ children }) => {
   // Remove from wishlist
   const removeFromWishlist = async (jewelryId) => {
     try {
-      const res = await axios.delete("http://localhost:3001/wishlist/remove", {
+      const res = await axios.delete("https://localhost:3001/wishlist/remove", {
         headers: { Authorization: `Bearer ${authToken}` },
         data: { jewelryId },
       });

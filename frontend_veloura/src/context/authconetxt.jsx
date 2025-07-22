@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
       try {
         setLoading(true); 
-        const response = await axios.get('http://localhost:3001/users/profile', { 
+        const response = await axios.get('https://localhost:3001/users/profile', { 
           headers: { Authorization: `Bearer ${authToken}` },
         });
         setUser(response.data);

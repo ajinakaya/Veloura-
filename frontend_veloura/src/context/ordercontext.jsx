@@ -17,7 +17,7 @@ export const OrderProvider = ({ children }) => {
      
     setError(null);
     try {
-      const res = await axios.get("http://localhost:3001/order/user", {
+      const res = await axios.get("https://localhost:3001/order/user", {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       setOrders(res.data || []);
@@ -34,7 +34,7 @@ export const OrderProvider = ({ children }) => {
   // Create new order
   const createOrder = async (orderData) => {
     try {
-      const res = await axios.post("http://localhost:3001/order/create", orderData, {
+      const res = await axios.post("https://localhost:3001/order/create", orderData, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       setCurrentOrder(res.data);
@@ -50,7 +50,7 @@ export const OrderProvider = ({ children }) => {
   // Cancel an order
   const cancelOrder = async (orderNumber) => {
     try {
-      await axios.put(`http://localhost:3001/order/cancel/${orderNumber}`, {}, {
+      await axios.put(`https://localhost:3001/order/cancel/${orderNumber}`, {}, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       fetchOrders();
@@ -63,7 +63,7 @@ export const OrderProvider = ({ children }) => {
   // Get single order by orderNumber
   const getOrderDetails = async (orderNumber) => {
     try {
-      const res = await axios.get(`http://localhost:3001/order/${orderNumber}`, {
+      const res = await axios.get(`https://localhost:3001/order/${orderNumber}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       setCurrentOrder(res.data);
