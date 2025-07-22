@@ -10,7 +10,7 @@ const Featured = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/jewelry/tag/Featured");
+        const response = await axios.get("https://localhost:3001/jewelry/tag/Featured");
         setProducts(response.data);
         setLoading(false);
       } catch (error) {

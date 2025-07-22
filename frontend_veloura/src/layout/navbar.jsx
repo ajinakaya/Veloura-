@@ -110,7 +110,7 @@ const Navbar = () => {
 
             {/* Right Side */}
             <div className="flex items-center space-x-9">
-        
+           
               <div
                 className="relative w-80 cursor-pointer"
                 onClick={() => setShowSearch(true)}
@@ -159,7 +159,7 @@ const Navbar = () => {
                           <div className="flex items-center space-x-3">
                             {user.image ? (
                               <img
-                                src={`http://localhost:3001/${user.image}`}
+                                src={`https://localhost:3001/${user.image}`}
                                 alt="Profile"
                                 className="w-10 h-10 rounded-full"
                               />

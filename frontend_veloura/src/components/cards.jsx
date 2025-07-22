@@ -57,7 +57,7 @@ const Productcards = ({ headline, subheading, products, tag }) => {
                 {/* Image */}
                 <div className="relative w-full h-[250px] overflow-hidden rounded-t-xl">
                   <img
-                    src={`http://localhost:3001/${product.thumbnail}`}
+                    src={`https://localhost:3001/${product.thumbnail}`}
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />

@@ -1,7 +1,7 @@
 // NewArrivals.jsx
-import axios from "axios";
-import { useEffect, useState } from "react";
-import Productcards from "./cards";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Productcards from '../components/cards';
 
 const NewArrivals = () => {
   const [products, setProducts] = useState([]);
@@ -10,13 +10,11 @@ const NewArrivals = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3001/jewelry/tag/New Arrival"
-        );
+        const response = await axios.get("https://localhost:3001/jewelry/tag/New Arrival");
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
         setLoading(false);
       }
     };
@@ -34,9 +32,9 @@ const NewArrivals = () => {
 
   return (
     <div>
-      <Productcards
-        products={products}
-        headline="New Arrival"
+      <Productcards 
+        products={products} 
+        headline="New Arrival" 
         subheading="Visit Veloura to see amazing creations from our designers."
         tag="New Arrival"
       />

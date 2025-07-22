@@ -14,7 +14,7 @@ const BestsellerSection = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/jewelry/tag/Best Seller");
+        const response = await axios.get("https://localhost:3001/jewelry/tag/Best Seller");
         setProducts(response.data.slice(0, 4)); // Limit to 4 items
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -57,7 +57,7 @@ const BestsellerSection = () => {
                 className="bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300"
               >
                 <img
-                  src={`http://localhost:3001/${product.thumbnail}`}
+                  src={`https://localhost:3001/${product.thumbnail}`}
                   alt={product.name}
                   className="w-full h-56 object-cover rounded-t-xl"
                 />
