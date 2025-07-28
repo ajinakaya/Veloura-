@@ -65,6 +65,7 @@ const createOrder = async (req, res) => {
       success: true,
       message: 'Order created successfully',
       orderNumber: order.orderNumber,
+      orderId: order._id,
       total: order.total,
       status: order.status
     });
@@ -81,10 +82,27 @@ const getUserOrders = async (req, res) => {
     const userId = req.user._id;
     const orders = await Order.find({ user: userId })
       .populate('cartItems.jewelry')
+      .populate('user', 'username email')
       .sort({ createdAt: -1 });
 
     res.status(200).json(orders);
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get all orders (Admin only)
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({})
+      .populate('cartItems.jewelry')
+      .populate('user', 'username email')
+      .populate('shippingMethod')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Get All Orders Error:", error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -105,6 +123,60 @@ const getOrder = async (req, res) => {
 
     res.status(200).json(order);
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get single order by ID (Admin)
+const getOrderById = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await Order.findById(orderId)
+      .populate('cartItems.jewelry')
+      .populate('user', 'name email')
+      .populate('shippingMethod');
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.error("Get Order By ID Error:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Update order status (Admin)
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const validStatuses = ['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
+    
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Invalid order status' });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    ).populate('cartItems.jewelry').populate('user', 'name email');
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Order status updated successfully',
+      order 
+    });
+  } catch (error) {
+    console.error("Update Order Status Error:", error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -160,13 +232,13 @@ const cancelOrder = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   createOrder,
   getUserOrders,
+  getAllOrders,      
   getOrder,
+  getOrderById,     
+  updateOrderStatus, 
   updatePaymentStatus,
   cancelOrder,
- 
 };

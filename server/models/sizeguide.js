@@ -1,32 +1,18 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-const sizeGuideSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
+const sizeGuideSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  images: [{ type: String }],
+  sizeDetails: [
+    {
+      label: { type: String },
+      measurement: { type: String },
+      note: { type: String },
     },
-    description: {
-      type: String,
-    },
-    images: [
-      {
-        type: String, 
-      },
-    ],
-    sizeDetails: [
-      {
-        label: { type: String },       
-        measurement: { type: String }, 
-        note: { type: String },       
-      },
-    ],
-  },
-  {
-    timestamps: true,
-  }
-);
+  ],
+}, { timestamps: true });
 
 const SizeGuide = mongoose.model('SizeGuide', sizeGuideSchema);
 
-export default SizeGuide;
+module.exports = SizeGuide;

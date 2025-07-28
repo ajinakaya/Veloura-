@@ -9,7 +9,7 @@ const CartSchema = new mongoose.Schema(
     },
     items: [
       {
-        jwelery: {
+        jewelry: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Jewelry",
           required: true,

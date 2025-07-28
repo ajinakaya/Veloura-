@@ -1,6 +1,6 @@
 const Jewelry = require("../models/jewelry");
 const Category = require("../models/category");
-const SizeGuide = require("../models/sizeguide");
+
 
 // Search Jewelry
 const searchJewelry = async (req, res) => {
@@ -13,19 +13,15 @@ const searchJewelry = async (req, res) => {
       category: { $regex: search, $options: "i" },
     }).select("_id");
 
-    const sizeGuideMatches = await SizeGuide.find({
-      section: { $regex: search, $options: "i" },
-    }).select("_id");
 
     const results = await Jewelry.find({
       $or: [
         { name: { $regex: search, $options: "i" } },
         { category: { $in: categoryMatches.map((c) => c._id) } },
-        { sizeGuide: { $in: sizeGuideMatches.map((s) => s._id) } },
+        
       ],
     })
-      .populate("category")
-      .populate("sizeGuide");
+      .populate("category");
 
     res.status(200).json(results);
   } catch (error) {
@@ -68,7 +64,6 @@ const filterJewelry = async (req, res) => {
 
     const filtered = await Jewelry.find(filter)
       .populate("category")
-      .populate("sizeGuide")
       .sort(sortOptions);
 
     res.status(200).json(filtered);
@@ -84,7 +79,7 @@ const getJewelryByTag = async (req, res) => {
 
     const jewelry = await Jewelry.find({ tags: tagName })
       .populate("category")
-      .populate("sizeGuide");
+
 
     res.status(200).json(jewelry);
   } catch (error) {

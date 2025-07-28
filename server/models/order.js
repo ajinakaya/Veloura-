@@ -51,22 +51,20 @@ const OrderSchema = new mongoose.Schema({
     email: { type: String, required: true },
     additionalInfo: { type: String }
   },
-
   // Payment Info
   payment: {
     method: {
       type: String,
-      enum: ["DIRECT_BANK_TRANSFER", "CASH_ON_DELIVERY","ONLINE_PAYMENT"],
+      enum: ["STRIPE", "CASH_ON_DELIVERY","ONLINE_PAYMENT"],
       required: true
     },
     status: {
       type: String,
-      enum: ["PENDING", "PAID", "FAILED"],
+      enum: ["PENDING", "PAID", "CANCELLED"],
       default: "PENDING"
     },
     transactionId: { type: String }
   },
-
   // Pricing
   subtotal: { type: Number, required: true },
   shippingCost: { type: Number, default: 0 }, 

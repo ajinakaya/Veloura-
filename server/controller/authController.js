@@ -5,12 +5,13 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const { createNotification } = require("../controller/notificationController");
 
+
 const PASSWORD_EXPIRY_DAYS = 90;
 
 
 const registerUser = async (req, res) => {
   try {
-    const { username, email, password, confirmpassword, role } = req.body;
+    const {username, email, password, confirmpassword, role } = req.body;
 
     if (password.length < 8) {
       return res.status(400).json({ error: 'Password should be at least 8 characters long' });
@@ -24,13 +25,19 @@ const registerUser = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const otpExpiry = Date.now() + 5 * 60 * 1000;
+
     const user = await User.create({
       username,
       email,
       password: hashedPassword,
+      confirmpassword: hashedPassword,
       role,
       passwordChangedAt: new Date(),
-      passwordHistory: [hashedPassword], 
+      passwordHistory: [hashedPassword],
+      otp,
+      otpExpires: otpExpiry,
     });
 
     await createNotification(user.id, 'Welcome! You have successfully registered.');
@@ -45,13 +52,16 @@ const registerUser = async (req, res) => {
     const mailOptions = {
       from: `Veloura <${process.env.EMAIL_USER}>`,
       to: user.email,
-      subject: 'Welcome to Veloura!',
-      html: `<h1>Welcome, ${user.username}!</h1><p>Thank you for registering with our app.</p>`,
+      subject: 'Veloura: Your Registration OTP Code',
+      html: `<h2>Verify your account using this OTP:</h2><h1>${otp}</h1><p>This code will expire in 5 minutes.</p>`,
     };
 
     await transporter.sendMail(mailOptions);
 
-    res.status(201).json({ message: 'User registered successfully. Email sent.', user });
+    res.status(201).json({  message: 'User registered successfully. OTP sent to email.',
+      userId: user._id,
+      email: user.email,
+    });
   } catch (error) {
     console.error('Error during registration:', error);
     res.status(500).json({ error: 'Something went wrong during registration' });
@@ -84,7 +94,7 @@ const loginUser = async (req, res) => {
       user.failedLoginAttempts = (user.failedLoginAttempts || 0) + 1;
 
       if (user.failedLoginAttempts >= 5) {
-        user.lockUntil = new Date(Date.now() + 15 * 60 * 1000); // lock for 15 minutes
+        user.lockUntil = new Date(Date.now() + 15 * 60 * 1000); 
         await user.save();
         return res.status(403).json({ error: 'Account locked due to failed login attempts.' });
       }
@@ -101,13 +111,6 @@ const loginUser = async (req, res) => {
     // Reset failed attempts & lock
     user.failedLoginAttempts = 0;
     user.lockUntil = undefined;
-
-    // Generate OTP for MFA
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpiry = Date.now() + 5 * 60 * 1000;
-
-    user.otp = otp;
-    user.otpExpires = otpExpiry;
     user.lastLogin = Date.now();
 
     let warningMessage = null;
@@ -123,26 +126,24 @@ const loginUser = async (req, res) => {
 
     await user.save();
 
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+    const token = jwt.sign(
+      { _id: user._id, role: user.role },
+      process.env.SECRET_KEY,
+      { expiresIn: '24h' }
+    );
+
+    res.cookie('jwtoken', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     });
 
-    const mailOptions = {
-      from: `Veloura <${process.env.EMAIL_USER}>`,
-      to: user.email,
-      subject: 'Veloura: Your Login OTP Code',
-      html: `<h2>Enter this code to complete your login:</h2><h1>${otp}</h1><p>This code will expire in 5 minutes.</p>`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    return res.status(200).json({ 
-        message: 'OTP sent to email. Please verify.',
-        warning: warningMessage,
-     });
+    return res.status(200).json({
+      message: 'Login successful',
+      token,
+      warning: warningMessage,
+    });
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).json({ error: 'An error occurred during login' });
@@ -352,12 +353,23 @@ const verifyOtp = async (req, res) => {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     });
 
-    return res.json({ message: 'Login successful', token });
+    return res.json({ message: 'Registration successful', token });
   } catch (error) {
     console.error('OTP verification error:', error);
     res.status(500).json({ error: 'An error occurred while verifying OTP' });
   }
 };
+
+// Logout user by clearing the JWT cookie
+const logoutUser = (req, res) => {
+  res.clearCookie('jwtoken', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict',
+  });
+  return res.status(200).json({ message: 'Logged out successfully' });
+};
+
 
 module.exports = {
   registerUser,
@@ -366,5 +378,6 @@ module.exports = {
   resetPassword,
   imageUpload,
   verifyOtp,
-  changePassword
+  changePassword,
+  logoutUser
 };

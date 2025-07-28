@@ -4,7 +4,7 @@ const rateLimit = require('express-rate-limit');
 const upload = require('../middlewares/upload');
 const { authenticateToken } = require('../security/authentication');
 const {validateRegister,validateLogin,validateForgot,validateReset,validateChangePassword} = require('../validation/authvalidation');
-const {registerUser,loginUser,forgetPassword,resetPassword,imageUpload,verifyOtp,changePassword} = require('../controller/authController');
+const {registerUser,loginUser,forgetPassword,resetPassword,imageUpload,verifyOtp,changePassword,logoutUser} = require('../controller/authController');
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -28,6 +28,7 @@ router.post('/verify-otp', verifyOtp);
 router.post('/forgetpassword',validateForgot, forgetPassword);
 router.post('/resetpassword',passwordResetLimiter,validateReset, resetPassword);
 router.post('/change-password', authenticateToken,validateChangePassword, changePassword);
+router.post('/logout', authenticateToken, logoutUser);
 router.post('/imageupload', authenticateToken, upload.single('image'), imageUpload);
 
 module.exports = router;

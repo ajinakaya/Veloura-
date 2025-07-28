@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const jewelrySchema = new mongoose.Schema({
   name: String,
 
-   description: {
+  description: {
     type: String,
   },
 
@@ -29,7 +29,6 @@ const jewelrySchema = new mongoose.Schema({
     required: true,
   },
 
-
   materials: [
     {
       icon: { type: String, required: false },
@@ -38,17 +37,17 @@ const jewelrySchema = new mongoose.Schema({
     },
   ],
 
-    details: [ 
-      {
-        label: { type: String, required: true },
-        value: { type: String, required: true },
-      },
-    ],
+  details: [
+    {
+      label: { type: String, required: true },
+      value: { type: String, required: true },
+    },
+  ],
 
-sizeGuide: {
-  type: mongoose.Schema.Types.ObjectId,
-  ref: 'SizeGuide',
-},
+  sizeGuide: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SizeGuide",
+  },
 
   tags: {
     type: [String],
@@ -57,4 +56,4 @@ sizeGuide: {
   },
 });
 
-module.exports = mongoose.model('Jewelry', jewelrySchema);
+module.exports = mongoose.model("Jewelry", jewelrySchema);
