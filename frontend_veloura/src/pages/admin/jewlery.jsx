@@ -268,8 +268,7 @@ const JewelryManagement = () => {
       thumbnailFile: null,
       colorOptionImageFiles: item.colorOptions 
         ? item.colorOptions.map((co) => ({
-           
-            currentImages: co.furnitureimages,
+            currentImages: co.jewelryImages,
           }))
         : [],
     });
@@ -349,7 +348,7 @@ const JewelryManagement = () => {
       ...prev,
       colorOptions: [
         ...prev.colorOptions,
-        { color: "", colorCode: "", furnitureimages: [] },
+        { color: "", colorCode: "", jewelryImages: [] },
       ],
      
       colorOptionImageFiles: [...prev.colorOptionImageFiles, null],
@@ -924,14 +923,14 @@ const JewelryManagement = () => {
                             className="w-full text-sm text-gray-500 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
                           />
                           {editingJewelry?.colorOptions?.[index]
-                            ?.furnitureimages?.length > 0 &&
+                            ?.jewelryImages?.length > 0 &&
                             !formData.colorOptionImageFiles[index] && (
                               <div className="mt-2 text-sm text-gray-600">
                                 Current Images:
                                 <div className="flex flex-wrap gap-2 mt-1">
                                   {editingJewelry.colorOptions[
                                     index
-                                  ].furnitureimages.map((img, imgIdx) => (
+                                  ].jewelryImages.map((img, imgIdx) => (
                                     <a
                                       key={imgIdx}
                                       href={`${API_BASE_URL}/${img}`}

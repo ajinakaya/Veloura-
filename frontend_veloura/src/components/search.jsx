@@ -99,11 +99,11 @@ const Search = ({ onClose }) => {
                         {item.name}
                       </h4>
                       <span className="text-gray-800 font-medium text-sm">
-                        ₹{item.price.toLocaleString()}
+                        Rs{item.price.toLocaleString()}
                       </span>
                     </div>
                     <p className="text-sm text-gray-600 mb-1">
-                      Size: {item.specifications?.dimensions?.overall || "N/A"}
+                      Size: {item.sizes || "N/A"}
                     </p>
                     <div className="flex items-center gap-1">
                       {item.colorOptions?.slice(0, 4).map((option, idx) => (

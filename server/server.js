@@ -41,7 +41,6 @@ app.use('/notifications', require('./routes/notificationroutes'));
 app.use('/sizeguide', require('./routes/sizeguideroutes'));
 app.use('/stripe', require('./routes/striperoutes'));
 app.use('/activitylog', require('./routes/activitylogroute'));
-
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 

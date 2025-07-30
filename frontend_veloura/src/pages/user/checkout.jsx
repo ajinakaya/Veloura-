@@ -3,12 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../layout/navbar";
 import { useCart } from "../../context/cartcontext";
-import { useAuth } from "../../context/authconetxt"; // Assuming you need authToken for fetching rates
+import { useAuth } from "../../context/authconetxt"; 
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { cart } = useCart();
-  const { authToken } = useAuth(); // Get authToken for fetching shipping rates
+  const { authToken } = useAuth();
 
   const [shippingOptions, setShippingOptions] = useState([]);
   const [selectedShipping, setSelectedShipping] = useState(null);

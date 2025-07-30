@@ -1,8 +1,12 @@
-const ActivityLog = require("../model/activitylog");
+const ActivityLog = require("../models/activityLog");
 
 const getActivityLogs = async (req, res) => {
   try {
-    const logs = await ActivityLog.find({})
+    const currentUserId = req.user?._id;
+
+    const logs = await ActivityLog.find({
+      userId: { $ne: currentUserId }, 
+    })
       .populate("userId", "username email")
       .sort({ createdAt: -1 });
 
@@ -13,3 +17,5 @@ const getActivityLogs = async (req, res) => {
 };
 
 module.exports = { getActivityLogs };
+
+

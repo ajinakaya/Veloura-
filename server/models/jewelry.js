@@ -19,7 +19,7 @@ const jewelrySchema = new mongoose.Schema({
     {
       color: { type: String, required: true },
       colorCode: { type: String, required: false },
-      furnitureimages: { type: [String], required: true },
+      jewelryImages: { type: [String], required: true },
     },
   ],
 

@@ -28,8 +28,8 @@ const createCheckoutSession = async (req, res) => {
         quantity: item.quantity,
       })),
       mode: 'payment',
-      success_url: `http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}&orderNumber=${order.orderNumber}`,
-      cancel_url: 'http://localhost:5173/cancel',
+      success_url: `https://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}&orderNumber=${order.orderNumber}`,
+      cancel_url: 'https://localhost:5173/cancel',
       metadata: {
         orderNumber: order.orderNumber,
         yourDbOrderId: order._id.toString(),

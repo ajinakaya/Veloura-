@@ -40,7 +40,7 @@ const Payment = () => {
     setLoading(true);
     try {
       const orderCreationResponse = await axios.post(
-        "http://localhost:3001/order/create",
+        "https://localhost:3001/order/create",
         {
           shippingMethod: selectedShipping.method,
           shippingAddress: formData,
@@ -206,7 +206,7 @@ const Payment = () => {
             </div>
 
             {/* Right Side: Order Summary */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 h-fit sticky top-24"> {/* Added border, shadow */}
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 h-fit sticky top-24"> 
               <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">Order Summary</h3>
               {cart.length === 0 ? (
                 <div className="text-center text-gray-500 py-4">Your cart is empty.</div>

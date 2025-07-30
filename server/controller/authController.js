@@ -4,6 +4,7 @@ const comparePassword = require('../helpers/auth').comparePassword;
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const { createNotification } = require("../controller/notificationController");
+const { logActivity } = require("../utils/activitylogger");
 
 
 const PASSWORD_EXPIRY_DAYS = 90;
@@ -98,8 +99,16 @@ const loginUser = async (req, res) => {
         await user.save();
         return res.status(403).json({ error: 'Account locked due to failed login attempts.' });
       }
-
       await user.save();
+      await logActivity({
+      req,
+      userId: user._id,
+      action: "USER_LOGIN",
+      details: {
+        username: user.username,
+        email: user.email,
+      },
+    });
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 

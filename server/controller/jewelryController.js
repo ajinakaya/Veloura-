@@ -29,7 +29,7 @@ const createJewelry = async (req, res) => {
       return {
         color: variant.color,
         colorCode: variant.colorCode || null,
-        furnitureimages: variantImages,
+        jewelryImages: variantImages,
       };
     });
 
@@ -129,7 +129,7 @@ const updateJewelry = async (req, res) => {
         return {
           color: variant.color,
           colorCode: variant.colorCode || null,
-          furnitureimages: variantImages,
+          jewelryImages: variantImages,
         };
       });
 

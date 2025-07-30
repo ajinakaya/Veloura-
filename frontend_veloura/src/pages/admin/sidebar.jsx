@@ -1,13 +1,13 @@
 import {
   Gem,Grid3X3, Ruler,RotateCcw, Users,LayoutDashboard,LogOut,Truck,Settings,Package,ChevronLeft,ChevronRight,
-  ShipWheel,
 } from "lucide-react";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/authconetxt";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const location = useLocation();
-
+ const { logout } = useAuth();
   const sidebarItems = [
     { name: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Jewelry", path: "/admin/jewelry", icon: Gem },
@@ -15,7 +15,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
     { name: "Size Guide", path: "/admin/size-guide", icon: Ruler },
     { name: "Return Policy", path: "/admin/return-policy", icon: RotateCcw },
     { name: "Shipping Rates", path: "/admin/shipping-rate", icon: Truck },
-    { name: "Users", path: "/admin/users", icon: Users },
+    { name: "Users", path: "/admin/user", icon: Users },
     { name: "Orders", path: "/admin/orders", icon: Package },
   ];
 
@@ -77,7 +77,10 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             </Link>
           </div>
         )}
-        <button className="flex items-center w-full p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-red-600 transition-colors text-left"> {/* Adjusted colors */}
+       <button
+          onClick={logout} 
+          className="flex items-center w-full p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-red-600 transition-colors text-left"
+        >
           <LogOut
             className={`${isSidebarOpen ? "mr-3" : "mx-auto"}`}
             size={20}

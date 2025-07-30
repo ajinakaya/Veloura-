@@ -8,10 +8,10 @@ import Cart from "./pages/user/cart";
 import Checkout from "./pages/user/checkout";
 import ContactUs from "./pages/user/contact";
 import ProductDetails from "./pages/user/detailspage";
-import FurnitureFilter from "./pages/user/filter";
-import ForgotPassword from "./pages/forgot password/forgot passord";
-import VerificationCode from "./pages/forgot password/pin";
-import SetNewPassword from "./pages/forgot password/resetpassword";
+import JewelryFilter from "./pages/user/filter";
+import ForgotPassword from "./pages/forgotpassword/forgot passord";
+import VerificationCode from "./pages/forgotpassword/pin";
+import SetNewPassword from "./pages/forgotpassword/resetpassword";
 import Home from "./pages/homepage";
 import NotificationPage from "./pages/user/notification";
 import OrderConfirmation from "./pages/user/orderconfirmation";
@@ -32,6 +32,7 @@ import OtpVerification from "./pages/Auth/otp-verify";
 import SuccessPage from "./pages/user/SuccessPage";
 import AdminOrderManagement from "./pages/admin/order";
 import DashboardPage from "./pages/admin/dashboard";
+import ActivityLogs from "./pages/admin/user";
 
 
 
@@ -52,7 +53,7 @@ const App = () => {
         <Route path="/pin" element={<VerificationCode />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
-        <Route path="/filter" element={<FurnitureFilter />} />
+        <Route path="/filter" element={<JewelryFilter />} />
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/otp-verify" element={<OtpVerification />} />
 
@@ -80,6 +81,8 @@ const App = () => {
           <Route path="/admin/size-guide" element={<SizeGuideAdmin />} />
           <Route path="/admin/orders" element={<AdminOrderManagement />} />
           <Route path="/admin/dashboard" element={<DashboardPage />} />
+          <Route path="/admin/user" element={<ActivityLogs />} />
+         
         </Route>
 
         <Route path="/unauthorized" element={<UnAuthorized />} />

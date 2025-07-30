@@ -25,7 +25,7 @@ const JewelryFilter = () => {
   const [loading, setLoading] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  const API = 'http://localhost:3001';
+  const API = 'https://localhost:3001';
 
   const sortOptions = [
     { value: 'name-asc', label: 'Name A-Z', sortBy: 'name', sortOrder: 'asc' },
